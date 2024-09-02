@@ -5,7 +5,7 @@ import {
     Timestamp,
     collection, query, where } from 'firebase/firestore';
 import { db, auth, googleProvider } from '../../config/firebase';
-import { signInWithPopup } from 'firebase/auth';
+import { signInWithRedirect } from 'firebase/auth';
 import './login.css';
 
 export const Login = ({ enterApp, defineUser }) => {
@@ -143,7 +143,7 @@ export const Login = ({ enterApp, defineUser }) => {
 
     const login = async () => {
         try {      
-            const result = await signInWithPopup(auth, googleProvider);
+            const result = await signInWithRedirect(auth, googleProvider);
             const user = result.user;
 
             const userDocumentsRef = collection(db, "users");
@@ -166,8 +166,8 @@ export const Login = ({ enterApp, defineUser }) => {
 
     const signUp = async () => {
         try {
-            await signInWithPopup(auth, googleProvider);
-            const result = await signInWithPopup(auth, googleProvider);
+            await signInWithRedirect(auth, googleProvider);
+            const result = await signInWithRedirect(auth, googleProvider);
             const user = result.user;
 
             const userDocumentsRef = collection(db, "users");
