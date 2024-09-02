@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.css": "/static/css/main.af03cadb.css",
+    "main.js": "/static/js/main.e560b518.js",
+    "static/media/streak.png": "/static/media/streak.d0d758e6cf562595b5d8.png",
+    "index.html": "/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.af03cadb.css",
+    "static/js/main.e560b518.js"
+  ]
+}
