@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/ego/static/css/main.af03cadb.css",
-    "main.js": "/ego/static/js/main.a44286ad.js",
+    "main.js": "/ego/static/js/main.1b3cdb9b.js",
     "static/media/streak.png": "/ego/static/media/streak.d0d758e6cf562595b5d8.png",
     "index.html": "/ego/index.html"
   },
   "entrypoints": [
     "static/css/main.af03cadb.css",
-    "static/js/main.a44286ad.js"
+    "static/js/main.1b3cdb9b.js"
   ]
 }
