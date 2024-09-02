@@ -1,0 +1,101 @@
+.screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.o-streak {
+    display: none;
+    position: absolute;
+    top: 10%;
+    left: -5%;
+    width: 1500px;
+    z-index: -1000;
+}
+
+.hero-text {
+    position: relative;
+}
+
+.enter-button {
+    border: 1px dashed black;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 81%;
+    font-size: 24px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: spin-and-change 7.5s infinite;
+    z-index: 100;
+}
+
+.enter-button:hover {
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.blowup-div {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 76.25%;
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    transition: all 1s ease-in-out;
+}
+
+.blowup-div-1 {
+    background-color: black;
+    width: 60px;
+    height: 60px;
+}
+
+.blowup-div-2 {
+    background-color: white;
+}
+
+.blowup-div.active {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    border-radius: 0px;
+    transform: none;
+    z-index: 9999;
+}
+
+@keyframes spin-and-change {
+    0% {
+        content: '🚀';
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    28% {
+        transform: translate(-50%, -50%) rotate(1440deg);
+    }
+    33% {
+        content: '🚁'; /* Change emoji */
+        transform: translate(-50%, -50%) rotate(1440deg);
+    }
+    61% {
+        transform: translate(-50%, -50%) rotate(2880deg);
+    }
+    66% {
+        content: '🛸'; /* Change emoji */
+        transform: translate(-50%, -50%) rotate(2880deg);
+    }
+    94% {
+        transform: translate(-50%, -50%) rotate(4320deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(4320deg);
+    }
+}

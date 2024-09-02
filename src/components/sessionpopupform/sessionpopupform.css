@@ -1,0 +1,112 @@
+.session-popup-form {
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    height: 600px;
+    padding: 30px;
+    border-radius: 10px;
+    z-index: 100;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    overflow: scroll;
+}
+
+.popup-form-name {
+    font-size: 42px;
+    margin-bottom: 30px;
+}
+
+.form-section {
+    margin-bottom: 20px !important;
+}
+
+.exercise-input {
+    margin-bottom: 20px;
+}
+
+.inline-input {
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.input-name {
+    font-size: 14px;
+}
+
+.form-inline-input {
+    font-size: 14px;
+    padding: 5px;
+    margin: 0 10px;
+    text-align: right;
+}
+
+.fii-num {
+    width: 45px;
+}
+
+.fii-alpha {
+    flex: 1;
+    margin-right: 0;
+    text-align: left;
+}
+
+.symbol {
+    margin-left: 10px;
+}
+
+input {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input:focus {
+    outline: none;
+}
+
+.form-button-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.form-button {
+    background: #ddd;
+    font-size: 12px;
+    padding: 5px 15px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.submit-form-button {
+    border: 1px solid black;
+    background: white;
+    color: black;
+    margin: auto;
+    box-sizing: border-box;
+    font-size: 15px;
+    height: 35px;
+    line-height: 35px;
+    width: 250px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.submit-form-button:hover {
+    border: 1px solid #2b79f6;
+    background-color: #2b79f6;
+    color: white;
+    cursor: pointer;
+}

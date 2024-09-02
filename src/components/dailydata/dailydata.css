@@ -1,0 +1,66 @@
+.no-work-message {
+    font-family: "Poppins", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    text-align: center;
+    padding-top: 50px;
+}
+
+.dailydata-box {
+    width: 80%;
+    margin: auto;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    margin-bottom: 40px;
+    border: 2px solid green;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 6px green;
+}
+
+.title-container {
+    display: flex;
+    align-items: baseline;
+}
+
+.user-subtitle {
+    font-weight: 200;
+    font-size: 16px;
+    margin-left: 6px;
+}
+
+.time-point {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.time-title {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.time-details {
+    margin-left: 12px;
+    font-weight: 200;
+}
+
+.exercise-title {
+    font-size: 15px;
+    font-weight: 400;
+    margin-top: 10px;
+    margin-bottom: 4px;
+}
+
+.exercise-details {
+    margin-left: 12px;
+    margin-bottom: 4px;
+    font-weight: 200;
+}

@@ -1,0 +1,94 @@
+.glitch-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #000000;
+ }
+ 
+ .glitch {
+    position: relative;
+    font-size: 40vw;
+    font-weight: bold;
+    color: #000;
+    letter-spacing: 3px;
+    z-index: 1;
+
+    font-family: "Poppins", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+ }
+ 
+ .glitch:before,
+ .glitch:after {
+    display: block;
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.8;
+ }
+ 
+ .glitch:before {
+    animation: glitch-it 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite,
+    colorRotate 1s infinite;
+    color: #00FFFF;
+    z-index: -1;
+ }
+ 
+ .glitch:after {
+    animation: glitch-it 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite,
+    colorRotate 1s reverse infinite;
+    color: #FF00FF;
+    z-index: -2;
+ }
+ 
+ @keyframes glitch-it {
+    0% {
+       transform: translate(0);
+    }
+    20% {
+       transform: translate(-4px, 4px);
+    }
+    40% {
+       transform: translate(-4px, -4px);
+    }
+    60% {
+       transform: translate(4px, 4px);
+    }
+    80% {
+       transform: translate(4px, -4px);
+    }
+    to {
+       transform: translate(0);
+    }
+ }
+
+ @keyframes colorRotate {
+    0% {
+      color: #ff0000; /* Red */
+    }
+    14.3% {
+      color: #ff7f00; /* Orange */
+    }
+    28.6% {
+      color: #ffff00; /* Yellow */
+    }
+    42.9% {
+      color: #00ff00; /* Green */
+    }
+    57.1% {
+      color: #0000ff; /* Blue */
+    }
+    71.4% {
+      color: #4b0082; /* Indigo */
+    }
+    85.7% {
+      color: #8b00ff; /* Violet */
+    }
+    100% {
+      color: #ff0000; /* Red */
+    }
+}
