@@ -95,6 +95,10 @@ export const Home = ({ group, user, updateData }) => {
                 return 'HOLISTIC';
             case 'LEGS-ABS':
                 return 'LEGS/ABS';
+            case 'CHEST-TRIS':
+                return 'CHEST/TRIS';
+            case 'BACK-BIS':
+                return 'BACK/BIS';
             case 'CHEST-BACK':
                 return 'CHEST/BACK';
             case 'SHOULDER-ARMS':
@@ -134,33 +138,27 @@ export const Home = ({ group, user, updateData }) => {
                         ))}
                         {daysInMonth.map((day, index) => (
                             <div key={index} 
-                                 className={`calendar-day ${day.length == 0 ? 'empty-day' : ''}`}
-                                 onClick={() => handleDateClick(day)}>
+                                    className={`calendar-day ${day.length === 0 ? 'empty-day' : ''}`}
+                                    onClick={() => handleDateClick(day)}>
                                 {day}
-                                {group?.users?.map((user, index) => {
-                                    // Get the user's workouts
+                                {group?.users?.map((user, userIndex) => {
+                                    // Get the user's workouts for the current day
                                     const userWorkouts = user.workouts || [];
-                                    var formattedCurrentDate;
-
-                                    // Check if there's a workout for the current date
-                                    const hasWorkout = userWorkouts.some(workout => {
-                                        formattedCurrentDate = formatDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), day));
-                                        return workout.date === formattedCurrentDate;
-                                    });
-
-                                    const categoryShortened = user?.workouts?.find(workout => {
-                                        return workout.date === formattedCurrentDate;
-                                    })?.category.toUpperCase();
-
-                                    // Render the tag if a workout is found
-                                    return hasWorkout ? (
-                                        <div 
-                                            key={user.id} // Assuming user has a unique id
-                                            className='calendar-tag'
-                                            style={{background: group.colors[index]}}
-                                        >
-                                            {mapCategoryToShortened(categoryShortened)}
-                                        </div>
+                                    const formattedCurrentDate = formatDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), day));
+                            
+                                    // Filter workouts to get only those for the current date
+                                    const todaysWorkouts = userWorkouts.filter(workout => workout.date === formattedCurrentDate);
+                            
+                                    return todaysWorkouts.length > 0 ? (
+                                        todaysWorkouts.map((workout, workoutIndex) => (
+                                            <div 
+                                                key={`${user.id}-${workoutIndex}`} // Combine user ID and workout index to ensure unique key
+                                                className='calendar-tag'
+                                                style={{ background: group.colors[userIndex] }}
+                                            >
+                                                {mapCategoryToShortened(workout.category.toUpperCase())}
+                                            </div>
+                                        ))
                                     ) : null;
                                 })}
                             </div>

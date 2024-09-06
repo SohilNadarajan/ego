@@ -12,8 +12,12 @@ export const SessionPopupForm = ({ group, user, updateData, disableScreen }) => 
     const [category, setCategory] = useState('');
     const [durationHours, setDurationHours] = useState('');
     const [durationMinutes, setDurationMinutes] = useState('');
-    const [exercises, setExercises] = useState([{}]); // Initialize with one empty exercise
-    const [dropsets, setDropsets] = useState([{}]);
+    const [exercises, setExercises] = useState([{
+        name: '',
+        sets: [''],
+        reps: [''],
+        lbs: ['']
+    }]);
 
     const formRef = useRef(null);
 
@@ -24,7 +28,7 @@ export const SessionPopupForm = ({ group, user, updateData, disableScreen }) => 
     }, [exercises]);
 
     const addExercise = () => {
-        setExercises([...exercises, {}]);
+        setExercises([...exercises, { name: '', sets: [''], reps: [''], lbs: [''] }]);
     };
 
     const removeExercise = () => {
@@ -33,12 +37,66 @@ export const SessionPopupForm = ({ group, user, updateData, disableScreen }) => 
         }
     };
 
-    const handleExerciseChange = (index, field, value) => {
+    const addDropset = (index) => {
         const newExercises = exercises.map((exercise, i) => 
-            i === index ? { ...exercise, [field]: value } : exercise
+            i === index
+                ? { 
+                    ...exercise, 
+                    sets: [...exercise.sets, ''],
+                    reps: [...exercise.reps, ''],
+                    lbs: [...exercise.lbs, '']
+                  }
+                : exercise
         );
         setExercises(newExercises);
     };
+
+    const removeDropset = (exerciseIndex) => {
+        const updatedExercises = exercises.map((exercise, index) => {
+            if (index === exerciseIndex) {
+                if (exercise.sets && exercise.sets.length > 0) {
+                    return {
+                        ...exercise,
+                        sets: exercise.sets.slice(0, -1), // Remove last element
+                        reps: exercise.reps.slice(0, -1), // Remove last element
+                        lbs: exercise.lbs.slice(0, -1)   // Remove last element
+                    };
+                }
+            }
+            return exercise;
+        });
+        setExercises(updatedExercises);
+    };
+
+    const handleExerciseChange = (exerciseIndex, field, value, dropsetIndex = null) => {
+        setExercises((prevExercises) => {
+            return prevExercises.map((exercise, i) => {
+                if (i === exerciseIndex) {
+                    if (field === 'name') {
+                        // Update the 'name' field directly
+                        return { ...exercise, name: value };
+                    } else {
+                        // Ensure sets, reps, or lbs are arrays
+                        const updatedField = Array.isArray(exercise[field]) ? [...exercise[field]] : [];
+    
+                        if (dropsetIndex !== null) {
+                            // Update the specific dropset index
+                            updatedField[dropsetIndex] = value;
+                        } else {
+                            // If no dropsetIndex, handle cases where there might be multiple sets
+                            // Ensure the array length matches the current number of dropsets
+                            updatedField.length = Math.max(updatedField.length, dropsetIndex + 1);
+                            updatedField[dropsetIndex] = value;
+                        }
+    
+                        return { ...exercise, [field]: updatedField };
+                    }
+                }
+                return exercise;
+            });
+        });
+    };
+    
 
     const submitForm = async () => {
         // Check for empty fields
@@ -48,8 +106,8 @@ export const SessionPopupForm = ({ group, user, updateData, disableScreen }) => 
         }
 
         // Check for at least one exercise
-        if (exercises.length === 0 || exercises.every(ex => !ex.name || ex.sets === '' || ex.reps === '' || ex.lbs === '')) {
-            alert("Please add at least one exercise with all required details.");
+        if (exercises.some(exercise => !exercise.name || exercise.sets === '' || exercise.reps === '' || exercise.lbs === '')) {
+            alert("Please fill all required details for exercises.");
             return;
         }
 
@@ -63,9 +121,9 @@ export const SessionPopupForm = ({ group, user, updateData, disableScreen }) => 
             },
             exercises: exercises.map(exercise => ({
                 name: exercise.name || '',
-                sets: exercise.sets || 0,
-                reps: exercise.reps || 0,
-                lbs: exercise.lbs || 0
+                sets: exercise.sets.filter(set => set !== ''),
+                reps: exercise.reps.filter(rep => rep !== ''),
+                lbs: exercise.lbs.filter(lbs => lbs !== '')
             }))
         };
 
@@ -80,7 +138,7 @@ export const SessionPopupForm = ({ group, user, updateData, disableScreen }) => 
         setCategory('');
         setDurationHours('');
         setDurationMinutes('');
-        setExercises([{}]);
+        setExercises([{ name: '', sets: [''], reps: [''], lbs: [''] }]);
         disableScreen();
         updateData();
     };
@@ -118,6 +176,8 @@ export const SessionPopupForm = ({ group, user, updateData, disableScreen }) => 
                     <option value='shoulder'>SHOULDERS</option>
                     <option value='holistic'>HOLISTIC</option>
                     <option value='legs-abs'>LEGS/ABS</option>
+                    <option value='chest-tris'>CHEST/TRIS</option>
+                    <option value='back-bis'>BACK/BIS</option>
                     <option value='chest-back'>CHEST/BACK</option>
                     <option value='shoulder-arms'>SHOULDER/ARMS</option>
                     <option value='miscellaneous'>MISCELLANEOUS</option>
@@ -138,40 +198,50 @@ export const SessionPopupForm = ({ group, user, updateData, disableScreen }) => 
                     onChange={(e) => setDurationMinutes(e.target.value)}
                 /> minutes
             </div>
-            {exercises.map((exercise, index) => (
-                <div key={index} className='exercise-input'>
-                    <div className='inline-input'>
-                        <div className='input-name'>Exercise: </div>
-                        <input 
-                            className='form-inline-input fii-alpha'
-                            value={exercise.name || ''}
-                            onChange={(e) => handleExerciseChange(index, 'name', e.target.value)}
-                        />
+            {exercises.map((exercise, exerciseIndex) => (
+                <>
+                    <div key={exerciseIndex} className='exercise-input'>
+                        <div className='inline-input'>
+                            <div className='input-name'>Exercise: </div>
+                            <input 
+                                className='form-inline-input fii-alpha'
+                                value={exercise.name || ''}
+                                onChange={(e) => handleExerciseChange(exerciseIndex, 'name', e.target.value)}
+                            />
+                        </div>
+                        {exercise.sets.map((set, dropsetIndex) => (
+                            <>
+                                <div key={dropsetIndex} className='inline-input'>
+                                    <input 
+                                        className='form-inline-input fii-num'
+                                        type='number'
+                                        value={exercise.sets[dropsetIndex] || ''}
+                                        onChange={(e) => handleExerciseChange(exerciseIndex, 'sets', e.target.value, dropsetIndex)}
+                                        style={{ marginLeft: '0' }}
+                                    /> sets
+                                    <span className='symbol'>&#10005;</span>
+                                    <input 
+                                        className='form-inline-input fii-num'
+                                        type='number'
+                                        value={exercise.reps[dropsetIndex] || ''}
+                                        onChange={(e) => handleExerciseChange(exerciseIndex, 'reps', e.target.value, dropsetIndex)}
+                                    /> reps
+                                    <span className='symbol'>@</span>
+                                    <input 
+                                        className='form-inline-input fii-num'
+                                        type='number'
+                                        value={exercise.lbs[dropsetIndex] || ''}
+                                        onChange={(e) => handleExerciseChange(exerciseIndex, 'lbs', e.target.value, dropsetIndex)}
+                                    /> lbs
+                                </div>
+                            </>
+                        ))}
                     </div>
-                    <div className='inline-input'>
-                        <input 
-                            className='form-inline-input fii-num'
-                            type='number'
-                            value={exercise.sets || ''}
-                            onChange={(e) => handleExerciseChange(index, 'sets', e.target.value)}
-                            style={{ marginLeft: '0' }}
-                        /> sets
-                        <span className='symbol'>&#10005;</span>
-                        <input 
-                            className='form-inline-input fii-num'
-                            type='number'
-                            value={exercise.reps || ''}
-                            onChange={(e) => handleExerciseChange(index, 'reps', e.target.value)}
-                        /> reps
-                        <span className='symbol'>@</span>
-                        <input 
-                            className='form-inline-input fii-num'
-                            type='number'
-                            value={exercise.lbs || ''}
-                            onChange={(e) => handleExerciseChange(index, 'lbs', e.target.value)}
-                        /> lbs
+                    <div className='form-button-container'>
+                        <div className='form-button' onClick={() => removeDropset(exerciseIndex)}>Remove Dropset</div>
+                        <div className='form-button' onClick={() => addDropset(exerciseIndex)}>Add Dropset</div>
                     </div>
-                </div>
+                </>
             ))}
             <div className='form-button-container'>
                 <div className='form-button' onClick={removeExercise}>Remove Exercise</div>
