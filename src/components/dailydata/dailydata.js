@@ -71,7 +71,6 @@ export const DailyData = ({ group, date }) => {
 			});
 			return null;
 		});
-		console.log(workouts);
 		setUserWorkouts(workouts);
     }, [group, date]);
 	

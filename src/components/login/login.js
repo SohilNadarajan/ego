@@ -5,7 +5,7 @@ import {
     Timestamp,
     collection, query, where } from 'firebase/firestore';
 import { db, auth, googleProvider } from '../../config/firebase';
-import { signInWithPopup } from 'firebase/auth';
+import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import './login.css';
 
 export const Login = ({ enterApp, defineUser }) => {
@@ -21,6 +21,8 @@ export const Login = ({ enterApp, defineUser }) => {
     const [isUserChecked, setIsUserChecked] = useState(false);
 
     const [displayName, setDisplayName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [groupName, setGroupName] = useState('');
     const [groupPassword, setGroupPassword] = useState('');
     const [userInfo, setUserInfo] = useState({});
@@ -114,6 +116,7 @@ export const Login = ({ enterApp, defineUser }) => {
             await updateDoc(userDocRef, {
                 groups: arrayUnion(groupDocRef.id),
             });
+            enterApp(groupName);
         } else {
             alert("Group name already exists!");
         }
@@ -142,8 +145,12 @@ export const Login = ({ enterApp, defineUser }) => {
     }
 
     const login = async () => {
-        try {      
-            const result = await signInWithPopup(auth, googleProvider);
+        if (email == "" || password == "") {
+            alert("Enter in your email and/or password!");
+            return;
+        }
+        try {
+            const result = await signInWithEmailAndPassword(auth, email, password);
             const user = result.user;
 
             const userDocumentsRef = collection(db, "users");
@@ -161,13 +168,23 @@ export const Login = ({ enterApp, defineUser }) => {
             }
         } catch (e) {
             console.error(e);
+            if (e.code == "auth/invalid-credential") {
+                alert("Wrong password or account does not exist!");
+            }
         }
     }
 
     const signUp = async () => {
+        if (email == "" || password == "") {
+            alert("Enter in your email and/or password!");
+            return;
+        }
+        if (password.length < 6) {
+            alert("Password is too weak!");
+            return;
+        }
         try {
-            await signInWithPopup(auth, googleProvider);
-            const result = await signInWithPopup(auth, googleProvider);
+            const result = await createUserWithEmailAndPassword(auth, email, password);
             const user = result.user;
 
             const userDocumentsRef = collection(db, "users");
@@ -189,6 +206,7 @@ export const Login = ({ enterApp, defineUser }) => {
                 setShowGroupContainer(true);
             } else {
                 alert('Account already exists...you are being logged in!');
+                return;
                 // enterApp();
                 await setUserJson();
                 setShowUserContainer(false);
@@ -197,6 +215,9 @@ export const Login = ({ enterApp, defineUser }) => {
             }
         } catch (e) {
             console.error(e);
+            if (e.code == "auth/email-already-in-use") {
+                alert("Email already in use!");
+            }
         }
     }
 
@@ -229,11 +250,31 @@ export const Login = ({ enterApp, defineUser }) => {
                     </div>}
                     */}
                     {signUpActive &&
-                    <input className='login-input' 
-                           placeholder='Display Name'
-                           onChange={(e) => setDisplayName(e.target.value)} />
+                    <>
+                        <input className='login-input' 
+                            placeholder='Display Name'
+                            onChange={(e) => setDisplayName(e.target.value)} />
+                        <input className='login-input' 
+                            placeholder='Email'
+                            onChange={(e) => setEmail(e.target.value)} />
+                        <input className='login-input' 
+                            placeholder='Password'
+                            type='password'
+                            onChange={(e) => setPassword(e.target.value)} />
+                    </>
                     }
-                    {/*x
+                    {loginActive &&
+                    <>
+                        <input className='login-input' 
+                            placeholder='Email'
+                            onChange={(e) => setEmail(e.target.value)} />
+                        <input className='login-input' 
+                            placeholder='Password'
+                            type='password'
+                            onChange={(e) => setPassword(e.target.value)} />
+                    </>
+                    }
+                    {/*
                     <input className='login-input' 
                            placeholder='Password' 
                            type='password'

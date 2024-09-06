@@ -5,6 +5,7 @@ import {
     Timestamp,
     collection, query, where } from 'firebase/firestore';
 import { db, auth, googleProvider } from './config/firebase';
+import { signInWithPopup, signInWithRedirect, getRedirectResult } from 'firebase/auth';
 import './App.css';
 import { Landing } from './components/landing/landing.js';
 import { Login } from './components/login/login.js';
