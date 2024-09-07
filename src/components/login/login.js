@@ -68,33 +68,34 @@ export const Login = ({ enterApp, defineUser }) => {
         const groupCollectionRef = collection(db, "groups");
         const q = query(groupCollectionRef, where("name", "==", groupName));
         const querySnapshot = await getDocs(q);
-        const groupId = querySnapshot.docs[0].id;
-
         if (querySnapshot.empty) {
             alert("Group doesn't exist!");
+            return;
+        }
+        const groupId = querySnapshot.docs[0].id;
+        const groupDocRef = doc(db, "groups", groupId);
+
+        if (!querySnapshot.docs[0].data().hasPassword) {
+            const userDocRef = doc(db, "users", auth?.currentUser?.uid);
+            await updateDoc(userDocRef, {
+                groups: arrayUnion(groupId),
+            });
+            await updateDoc(groupDocRef, {
+                users: arrayUnion(auth?.currentUser?.uid)
+            });
+            enterApp(groupName);
         } else {
-            if (querySnapshot.data().password == '') {
+            if (querySnapshot.docs[0].data().password == groupPassword) {
                 const userDocRef = doc(db, "users", auth?.currentUser?.uid);
                 await updateDoc(userDocRef, {
                     groups: arrayUnion(groupId),
                 });
-                await updateDoc(querySnapshot.docs[0], {
+                await updateDoc(groupDocRef, {
                     users: arrayUnion(auth?.currentUser?.uid)
                 });
                 enterApp(groupName);
             } else {
-                if (querySnapshot.data().password == groupPassword) {
-                    const userDocRef = doc(db, "users", auth?.currentUser?.uid);
-                    await updateDoc(userDocRef, {
-                        groups: arrayUnion(groupId),
-                    });
-                    await updateDoc(querySnapshot.docs[0], {
-                        users: arrayUnion(auth?.currentUser?.uid)
-                    });
-                    enterApp(groupName);
-                } else {
-                    alert("Password incorrect!");
-                }
+                alert("Password incorrect!");
             }
         }
     }
