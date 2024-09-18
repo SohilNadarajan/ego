@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.css": "/ego/static/css/main.156dfda6.css",
-    "main.js": "/ego/static/js/main.7c4443d9.js",
+    "main.css": "/ego/static/css/main.60bfad83.css",
+    "main.js": "/ego/static/js/main.4beb9db1.js",
     "static/media/streak.png": "/ego/static/media/streak.d0d758e6cf562595b5d8.png",
     "index.html": "/ego/index.html"
   },
   "entrypoints": [
-    "static/css/main.156dfda6.css",
-    "static/js/main.7c4443d9.js"
+    "static/css/main.60bfad83.css",
+    "static/js/main.4beb9db1.js"
   ]
 }
