@@ -26,6 +26,16 @@
     margin: 8px 0;
 }
 
+.totaldata-tag-mini {
+    color: white;
+    width: fit-content;
+    box-sizing: border-box;
+    padding: 2px 10px;
+    border-radius: 50px;
+    margin: 8px 0;
+    font-size: 12px;
+}
+
 .stats-box {
     display: flex;
 }
